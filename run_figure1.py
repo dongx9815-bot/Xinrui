@@ -137,10 +137,10 @@ def main() -> None:
 
     print(f"figure written to {args.out}")
     print(f"  theoretical  lambda*  = {model.lambda_star:.4f}")
-    print(f"  theoretical  s(pi*)   = {model.s_star:.4f}")
-    print(f"  sample mean = {mean:+.4f}  (s.e. {se_mean:.4f};"
+    print(f"  theoretical  s(pi*)   = {model.s_star:.5f}")
+    print(f"  sample mean = {mean:+.5f}  (s.e. {se_mean:.5f};"
           f" {abs(mean) / se_mean:.2f} s.e. from 0)")
-    print(f"  sample s.d. = {sd:.4f}  (s.e. {se_sd:.4f};"
+    print(f"  sample s.d. = {sd:.5f}  (s.e. {se_sd:.5f};"
           f" {abs(sd - model.s_star) / se_sd:.2f} s.e. from s(pi*))")
 
 

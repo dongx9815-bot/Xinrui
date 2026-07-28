@@ -2,8 +2,8 @@
 
 Reproduction code for the numerical experiments of
 
-> X. Dong, *Ergodic properties and growth-optimal asset allocation in stochastic factor
-> markets: invariant measures, limit theorems, and Kelly portfolios*.
+> X. Dong and E. V. Bulinskaya, *Ergodic properties and growth-optimal asset allocation in
+> stochastic factor markets: invariant measures, limit theorems, and Kelly portfolios*.
 > Faculty of Mechanics and Mathematics, Lomonosov Moscow State University.
 
 Everything reported in Sections 7 and 8 of the manuscript — the closed-form ergodic
@@ -85,12 +85,12 @@ ten seconds each on a laptop.
 ```
   optimal growth rate      lambda^*  = 0.0938
   static strategy rate  lambda(pi_c) = 0.0488
-  asymptotic s.d.        s(pi^*)     = 0.3935
+  asymptotic s.d.        s(pi^*)     = 0.39346
 
   sup residual over x in [-6, 6] = 1.066e-14
 
-  sample mean = -0.0002   (s.e. 0.0039; 0.04 s.e. from 0)
-  sample s.d. = 0.3936   (s.e. 0.0028; 0.05 s.e. from s(pi^*) = 0.3935)
+  sample mean = -0.00015   (s.e. 0.00393; 0.04 s.e. from 0)
+  sample s.d. = 0.39361   (s.e. 0.00278; 0.05 s.e. from s(pi^*) = 0.39346)
   skewness         = +0.0629   (s.e. 0.0245)
   excess kurtosis  = +0.0452   (s.e. 0.0490)
   Kolmogorov--Smirnov test against N(0,1): D = 0.0108, p = 0.191
@@ -98,8 +98,12 @@ ten seconds each on a laptop.
 
 The residual of the Poisson equation vanishing to machine precision confirms the
 explicit corrector of Eq. (37); the agreement of the sample standard deviation with
-`s(pi*) = 0.3935` to within one twentieth of a Monte Carlo standard error confirms the
+`s(pi*) = 0.39346` to within one twentieth of a Monte Carlo standard error confirms the
 closed-form asymptotic variance of Eq. (38).
+
+Diagnostics are printed to five significant figures so that the two standard-error
+ratios can be recomputed from the printed values alone; Section 8 of the paper quotes
+the same figures.
 
 ## Numerical scheme
 
@@ -116,7 +120,7 @@ is negligible at this step size.
 
 ```bibtex
 @article{Dong_ErgodicKelly,
-  author  = {Dong, Xinrui},
+  author  = {Dong, Xinrui and Bulinskaya, Ekaterina V.},
   title   = {Ergodic properties and growth-optimal asset allocation in stochastic
              factor markets: invariant measures, limit theorems, and Kelly portfolios},
   journal = {Preprint},

@@ -75,7 +75,7 @@ def check_closed_forms(model) -> None:
     print(f"  portfolio-noise variance           = {model.s2_portfolio:.6f}")
     print(f"  factor-transmitted variance        = {model.s2_factor:.6f}")
     print(f"  asymptotic variance   s^2(pi^*)    = {model.s2_star:.6f}")
-    print(f"  asymptotic s.d.        s(pi^*)     = {model.s_star:.4f}")
+    print(f"  asymptotic s.d.        s(pi^*)     = {model.s_star:.5f}")
 
     assert np.isclose(model.lambda_star - model.lambda_const, model.timing_premium)
     assert np.isclose(model.s2_star, model.s2_portfolio + model.s2_factor)
@@ -125,10 +125,13 @@ def check_clt(model, dt, horizon, n_paths, seed) -> None:
     se_mean = model.s_star / np.sqrt(n_paths)
     se_sd = model.s_star / np.sqrt(2.0 * n_paths)
 
-    print(f"  sample mean = {mean:+.4f}   (s.e. {se_mean:.4f};"
+    # five decimals: Section 8 of the paper quotes these numbers to five
+    # significant figures, so that the reader can recompute the two
+    # standard-error ratios below from the printed values alone.
+    print(f"  sample mean = {mean:+.5f}   (s.e. {se_mean:.5f};"
           f" {abs(mean) / se_mean:.2f} s.e. from 0)")
-    print(f"  sample s.d. = {sd:.4f}   (s.e. {se_sd:.4f};"
-          f" {abs(sd - model.s_star) / se_sd:.2f} s.e. from s(pi^*) = {model.s_star:.4f})")
+    print(f"  sample s.d. = {sd:.5f}   (s.e. {se_sd:.5f};"
+          f" {abs(sd - model.s_star) / se_sd:.2f} s.e. from s(pi^*) = {model.s_star:.5f})")
 
     # shape diagnostics: the limit law is Gaussian, hence skewness 0 and
     # excess kurtosis 0
