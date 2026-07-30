@@ -39,6 +39,10 @@ import argparse
 
 import matplotlib
 matplotlib.use("Agg")
+# Embed text as TrueType rather than as Type 3 subsetted outlines. Elsevier's
+# artwork checks reject Type 3 fonts, which are matplotlib's PDF default.
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
 import matplotlib.pyplot as plt
 import numpy as np
 

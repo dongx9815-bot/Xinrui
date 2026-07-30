@@ -73,7 +73,7 @@ ten seconds each on a laptop.
 | `Model.lambda_star`               | optimal ergodic growth rate `lambda*`, Eq. (35) |
 | `Model.timing_premium`            | ergodic timing premium `beta^2 varsigma^2 / (2 sigma0^2)` |
 | `Model.corrector(x)`              | Poisson corrector `phi*(x)`, Eq. (37) |
-| `Model.poisson_residual(x)`       | residual of the Poisson equation, Eq. (32) |
+| `Model.poisson_residual(x)`       | residual of the Poisson equation, Eq. (30) |
 | `Model.s2_star`                   | asymptotic variance `s^2(pi*)`, Eq. (38) |
 | `simulate_terminal_growth`        | Euler–Maruyama simulation of the log-wealth decomposition, Eq. (9) |
 | `clt_sample`                      | normalised errors entering Theorem 5.3 |

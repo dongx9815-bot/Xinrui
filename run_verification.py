@@ -83,7 +83,7 @@ def check_closed_forms(model) -> None:
 
 
 def check_poisson(model) -> None:
-    rule("2. Poisson equation  L phi^* = -(g - lambda^*)   (Eq. 32, 37)")
+    rule("2. Poisson equation  L phi^* = -(g - lambda^*)   (Eq. 30, 37)")
     grid = np.linspace(-6.0, 6.0, 2001)
     residual = model.poisson_residual(grid)
     err = float(np.max(np.abs(residual)))
