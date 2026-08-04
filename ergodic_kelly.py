@@ -4,9 +4,9 @@ ergodic_kelly.py
 
 Model, closed-form quantities and Monte Carlo kernels for
 
-    X. Dong, "Ergodic properties and growth-optimal asset allocation in
-    stochastic factor markets: invariant measures, limit theorems, and
-    Kelly portfolios".
+    X. Dong and E. V. Bulinskaya, "Ergodic properties and growth-optimal
+    asset allocation in stochastic factor markets: invariant measures,
+    limit theorems, and Kelly portfolios".
 
 The module implements the Ornstein--Uhlenbeck specialisation of Section 7
 of the paper:
@@ -29,7 +29,8 @@ following ASCII transliterations:
     thetabar mubar - r                                   (\bar\theta)
     var_inf  eta^2 / (2k), the invariant variance        (\varsigma^2)
 
-Author : Xinrui Dong <sinzhui.dun@math.msu.ru>
+Authors: Xinrui Dong <sinzhui.dun@math.msu.ru>
+         Ekaterina V. Bulinskaya <bulinskaya@yandex.ru>
 License: MIT
 """
 
@@ -179,7 +180,7 @@ PAPER_PARAMETERS = Model()
 # ----------------------------------------------------------------------
 # Monte Carlo kernels
 # ----------------------------------------------------------------------
-def simulate_factor(model, x0, n_steps, dt, rng, exact=False):
+def simulate_factor(model, x0, n_steps, dt, rng, exact=True):
     """Simulate the OU factor on a uniform grid.
 
     Parameters
@@ -192,11 +193,14 @@ def simulate_factor(model, x0, n_steps, dt, rng, exact=False):
     dt : float
         Step size.
     rng : numpy.random.Generator
-    exact : bool, default False
-        If ``True``, use the exact Gaussian transition of the OU process
-        instead of the Euler--Maruyama scheme. The paper uses the
-        Euler--Maruyama scheme; the exact scheme is provided so that the
-        discretisation bias can be quantified.
+    exact : bool, default True
+        If ``True`` (the default), use the exact Gaussian transition of
+        the OU process; if ``False``, use the Euler--Maruyama scheme. The
+        paper samples the factor exactly, so that the only discretisation
+        left is that of the time integrals in the log-wealth. Setting
+        ``exact=False`` reproduces the Euler factor and quantifies the
+        bias it introduces (0.57 Monte Carlo standard errors at
+        ``dt = 5e-3``).
 
     Returns
     -------
@@ -264,7 +268,7 @@ def simulate_log_wealth(model, x_path, dt, rng, strategy=None):
     return log_wealth
 
 
-def simulate_terminal_growth(model, x0, horizon, dt, rng, strategy=None, exact=False):
+def simulate_terminal_growth(model, x0, horizon, dt, rng, strategy=None, exact=True):
     r"""Terminal realized growth rate :math:`T^{-1}\log(V_T/V_0)`.
 
     Streaming counterpart of :func:`simulate_factor` followed by
@@ -282,13 +286,13 @@ def simulate_terminal_growth(model, x0, horizon, dt, rng, strategy=None, exact=F
     horizon : float
         Terminal time ``T``.
     dt : float
-        Step size of the Euler--Maruyama scheme.
+        Step size of the time grid.
     rng : numpy.random.Generator
     strategy : callable or None
         Feedback strategy ``x -> pi(x)``. ``None`` selects the Kelly rule.
-    exact : bool, default False
-        Sample the factor from its exact Gaussian transition instead of
-        using the Euler--Maruyama scheme.
+    exact : bool, default True
+        Sample the factor from its exact Gaussian transition (default);
+        set to ``False`` to revert the factor to Euler--Maruyama.
 
     Returns
     -------
@@ -317,7 +321,7 @@ def simulate_terminal_growth(model, x0, horizon, dt, rng, strategy=None, exact=F
     return log_wealth / horizon
 
 
-def clt_sample(model, n_paths, horizon, dt, seed, exact=False):
+def clt_sample(model, n_paths, horizon, dt, seed, exact=True):
     r"""Normalised errors :math:`\sqrt{T}(T^{-1}\log(V_T/V_0)-\lambda^*)`.
 
     The factor is started from its invariant measure
@@ -337,6 +341,10 @@ def clt_sample(model, n_paths, horizon, dt, seed, exact=False):
 
 def realized_growth_path(log_wealth, dt):
     r"""Running realized growth rate :math:`t^{-1}\log(V_t/V_0)`.
+
+    exact : bool, default True
+        Sample the factor from its exact Gaussian transition (default);
+        set to ``False`` to revert the factor to Euler--Maruyama.
 
     Returns
     -------

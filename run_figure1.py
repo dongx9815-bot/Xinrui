@@ -55,7 +55,7 @@ from ergodic_kelly import (
 )
 
 # Configuration of Section 8 -------------------------------------------
-DT = 5e-3            # Euler--Maruyama step
+DT = 5e-3            # time-integral grid step (factor sampled exactly)
 T_LONG = 500.0       # horizon of panel (a)
 N_PATHS_A = 8        # trajectories in panel (a)
 T_CLT = 100.0        # horizon of panel (b)

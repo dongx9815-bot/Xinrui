@@ -75,7 +75,7 @@ ten seconds each on a laptop.
 | `Model.corrector(x)`              | Poisson corrector `phi*(x)`, Eq. (37) |
 | `Model.poisson_residual(x)`       | residual of the Poisson equation, Eq. (30) |
 | `Model.s2_star`                   | asymptotic variance `s^2(pi*)`, Eq. (38) |
-| `simulate_terminal_growth`        | Euler–Maruyama simulation of the log-wealth decomposition, Eq. (9) |
+| `simulate_terminal_growth`        | simulation of the log-wealth decomposition, Eq. (9); exact factor transition, Euler time integrals |
 | `clt_sample`                      | normalised errors entering Theorem 5.3 |
 
 ## Expected output
@@ -89,16 +89,16 @@ ten seconds each on a laptop.
 
   sup residual over x in [-6, 6] = 1.066e-14
 
-  sample mean = -0.00015   (s.e. 0.00393; 0.04 s.e. from 0)
-  sample s.d. = 0.39361   (s.e. 0.00278; 0.05 s.e. from s(pi^*) = 0.39346)
-  skewness         = +0.0629   (s.e. 0.0245)
-  excess kurtosis  = +0.0452   (s.e. 0.0490)
-  Kolmogorov--Smirnov test against N(0,1): D = 0.0108, p = 0.191
+  sample mean = -0.00238   (s.e. 0.00393; 0.61 s.e. from 0)
+  sample s.d. = 0.39302   (s.e. 0.00278; 0.16 s.e. from s(pi^*) = 0.39346)
+  skewness         = +0.0632   (s.e. 0.0245)
+  excess kurtosis  = +0.0451   (s.e. 0.0490)
+  Kolmogorov--Smirnov test against N(0,1): D = 0.0109, p = 0.188
 ```
 
 The residual of the Poisson equation vanishing to machine precision confirms the
 explicit corrector of Eq. (37); the agreement of the sample standard deviation with
-`s(pi*) = 0.39346` to within one twentieth of a Monte Carlo standard error confirms the
+`s(pi*) = 0.39346` to within a sixth of a Monte Carlo standard error confirms the
 closed-form asymptotic variance of Eq. (38).
 
 Diagnostics are printed to five significant figures so that the two standard-error
@@ -107,14 +107,16 @@ the same figures.
 
 ## Numerical scheme
 
-The factor and the log-wealth are advanced jointly by the Euler–Maruyama scheme with
-step `dt = 5e-3`, exactly as stated in Section 8. Paths are not stored: the simulation
+The factor is sampled from its exact Gaussian transition, so the only discretisation is
+that of the two time integrals in the log-wealth decomposition, on a grid of step
+`dt = 5e-3`, exactly as stated in Section 8. Paths are not stored: the simulation
 streams, so memory is `O(number of paths)` rather than `O(steps × paths)`, which is
 what makes the 10 000-path central limit theorem experiment inexpensive. For control,
-`simulate_factor` and `simulate_terminal_growth` accept `exact=True`, which samples the
-factor from its exact Gaussian transition law instead; the difference in the reported
-statistics is well below the Monte Carlo error, confirming that the discretisation bias
-is negligible at this step size.
+`simulate_factor`, `simulate_terminal_growth` and `clt_sample` accept `exact=False`, which reverts the
+factor to the Euler–Maruyama scheme. At `dt = 5e-3` the two schemes
+differ by 0.57 Monte Carlo standard errors in the normalised mean (measured with common
+random numbers over five seeds: +0.002250 +/- 0.000011), which is why the paper samples
+the factor exactly.
 
 ## Citation
 
