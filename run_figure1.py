@@ -43,6 +43,18 @@ matplotlib.use("Agg")
 # artwork checks reject Type 3 fonts, which are matplotlib's PDF default.
 matplotlib.rcParams["pdf.fonttype"] = 42
 matplotlib.rcParams["ps.fonttype"] = 42
+# Elsevier requires 7 pt for normal lettering and at least 6 pt for sub- and
+# superscripts at final printed size. The figure is included at \textwidth = 390 pt,
+# so a 7.5 in canvas is scaled by 0.72 and every size below must clear those floors
+# after that scaling; 12 pt -> 8.7 pt, and its scripts 8.4 pt -> 6.1 pt.
+matplotlib.rcParams.update({
+    "font.size": 12,
+    "axes.titlesize": 12,
+    "axes.labelsize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+})
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -89,8 +101,8 @@ def panel_a(model, ax, dt, horizon, n_paths, seed):
     ax.set_xscale("log")
     ax.set_xlabel(r"$T$")
     ax.set_ylabel(r"$T^{-1}\log(V_T/V_0)$")
-    ax.set_title("(a) A.s. convergence of the realized growth rate", fontsize=10)
-    ax.legend(loc="upper right", fontsize=8, framealpha=1.0)
+    ax.set_title("(a) A.s. convergence of the realized growth rate")
+    ax.legend(loc="upper right", framealpha=1.0)
 
 
 def panel_b(model, ax, dt, horizon, n_paths, seed):
@@ -108,8 +120,8 @@ def panel_b(model, ax, dt, horizon, n_paths, seed):
     ax.set_xlabel(r"$\sqrt{T}\,(T^{-1}\log(V_T/V_0)-\lambda^*)$")
     ax.set_ylabel("density")
     ax.set_title(r"(b) CLT at $T=%d$ (%s paths)"
-                 % (int(horizon), format(n_paths, ",")), fontsize=10)
-    ax.legend(loc="upper right", fontsize=8, framealpha=1.0)
+                 % (int(horizon), format(n_paths, ",")))
+    ax.legend(loc="upper right", framealpha=1.0)
     return normalised
 
 
@@ -128,7 +140,7 @@ def main() -> None:
 
     model = PAPER_PARAMETERS
 
-    fig, axes = plt.subplots(1, 2, figsize=(11.0, 3.6))
+    fig, axes = plt.subplots(1, 2, figsize=(7.5, 2.6))
     panel_a(model, axes[0], dt, horizon_a, N_PATHS_A, SEED_SLLN)
     normalised = panel_b(model, axes[1], dt, T_CLT, n_paths_b, SEED_CLT)
     fig.tight_layout()
