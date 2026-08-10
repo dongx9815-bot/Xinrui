@@ -99,6 +99,7 @@ def panel_a(model, ax, dt, horizon, n_paths, seed):
     ax.axhline(model.lambda_const, color="k", ls=":", lw=1.2,
                label=r"$\lambda(\pi_{\mathrm{const}})$")
     ax.set_xscale("log")
+    ax.set_yticks([-0.5, 0.0, 0.5, 1.0, 1.5])
     ax.set_xlabel(r"$T$")
     ax.set_ylabel(r"$T^{-1}\log(V_T/V_0)$")
     ax.set_title("(a) A.s. convergence of the realized growth rate")
@@ -118,6 +119,7 @@ def panel_b(model, ax, dt, horizon, n_paths, seed):
     ax.plot(grid, density, color="k", lw=1.4,
             label=r"$\mathcal{N}(0,\hat{s}^2)$, $\hat{s}=%.4f$" % s_hat)
     ax.set_xlabel(r"$\sqrt{T}\,(T^{-1}\log(V_T/V_0)-\lambda^*)$")
+    ax.set_yticks([0.0, 0.25, 0.50, 0.75, 1.00])
     ax.set_ylabel("density")
     ax.set_title(r"(b) CLT at $T=%d$ (%s paths)"
                  % (int(horizon), format(n_paths, ",")))
